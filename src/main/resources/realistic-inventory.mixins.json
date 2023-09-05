@@ -1,0 +1,59 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.moutarde.realisticinventory.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MinecraftClientMixin",
+
+    "HandledScreenMixin",
+
+    "ScreenHandlerInvoker",
+    "GenericContainerScreenHandlerMixin",
+
+    "Creative.CreativeScreenHandlerMixin",
+    "Creative.CreativeInventoryScreenAccessor",
+    "Creative.CreativeInventoryScreenMixin",
+
+    "CraftingTable.CraftingScreenHandlerMixin",
+
+    "Furnace.AbstractFurnaceScreenHandlerMixin",
+
+    "EnchantingTable.EnchantmentScreenHandlerMixin",
+
+    "BrewingStand.BrewingStandScreenHandlerMixin",
+
+    "Merchant.MerchantScreenHandlerMixin",
+
+    "Beacon.BeaconScreenHandlerMixin",
+
+    "Hopper.HopperScreenHandlerMixin",
+
+    "ShulkerBox.ShulkerBoxScreenHandlerMixin",
+
+    "Horse.HorseScreenHandlerMixin",
+
+    "CartographyTable.CartographyTableScreenHandlerMixin",
+
+    "GrindingStone.GrindstoneScreenHandlerMixin",
+
+    "Loom.LoomScreenHandlerMixin",
+
+    "Stonecutter.StonecutterScreenHandlerMixin",
+
+    "Generic3x3ContainerScreenHandlerMixin",
+    "ForgingScreenHandlerMixin",
+
+    "Hud.InGameHudAccessor",
+    "Hud.InGameHudInvoker",
+    "Hud.InGameHudMixin",
+
+    "Player.PlayerInventoryMixin",
+    "Player.PlayerScreenHandlerMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

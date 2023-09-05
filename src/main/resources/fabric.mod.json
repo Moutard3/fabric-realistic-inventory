@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "realistic-inventory",
+  "version": "${version}",
+  "name": "realistic-inventory",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/alexa/realistic-inventory"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/realistic-inventory/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.moutarde.realisticinventory.client.Realistic_inventoryClient"
+    ],
+    "main": [
+      "me.moutarde.realisticinventory.Realistic_inventory"
+    ]
+  },
+  "mixins": [
+    "realistic-inventory.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
