@@ -3,14 +3,11 @@ package me.moutarde.realisticinventory.mixin.Player;
 import me.moutarde.realisticinventory.mixin.ScreenHandlerInvoker;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.screen.CraftingScreenHandler;
 import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.slot.Slot;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
@@ -31,14 +28,14 @@ public abstract class PlayerScreenHandlerMixin {
     public static final int EQUIPMENT_END = 9;
     @Shadow @Final
     public static final int INVENTORY_START = EQUIPMENT_END;
-    @Shadow @Final
-    public static final int INVENTORY_END = INVENTORY_START + INVENTORY_SIZE;
-    @Shadow @Final
-    public static final int HOTBAR_START = INVENTORY_END;
-    @Shadow @Final
-    public static final int HOTBAR_END = HOTBAR_START + HOTBAR_SIZE;
-    @Shadow @Final
-    public static final int OFFHAND_ID = HOTBAR_END;
+    @Shadow
+    public static int INVENTORY_END = INVENTORY_START + INVENTORY_SIZE;
+    @Shadow
+    public static int HOTBAR_START = INVENTORY_END;
+    @Shadow
+    public static int HOTBAR_END = HOTBAR_START + HOTBAR_SIZE;
+    @Shadow
+    public static int OFFHAND_ID = HOTBAR_END;
 
     @Redirect(
             method = "<init>",
@@ -66,12 +63,12 @@ public abstract class PlayerScreenHandlerMixin {
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/screen/PlayerScreenHandler;addSlot(Lnet/minecraft/screen/slot/Slot;)Lnet/minecraft/screen/slot/Slot;", ordinal = 5, shift = At.Shift.BEFORE))
     public void injected(PlayerInventory inventory, boolean onServer, PlayerEntity owner, CallbackInfo ci) {
         int i;
-        for(i = 0; i < INVENTORY_SIZE; ++i) {
-            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(inventory, HOTBAR_SIZE + i, 8 + (i%9) * 18, 84 + (i/9) * 18));
+        for(i = 0; i < INVENTORY_END - INVENTORY_START; ++i) {
+            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(inventory, HOTBAR_END - HOTBAR_START + i, 8 + (i%9) * 18, 84 + (i/9) * 18));
         }
 
         final int offset = 18 * 4;
-        for (i = 0; i < HOTBAR_SIZE; ++i) {
+        for (i = 0; i < HOTBAR_END - HOTBAR_START; ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(inventory, i, offset + 8 + i * 18, 142));
         }
     }
@@ -83,7 +80,7 @@ public abstract class PlayerScreenHandlerMixin {
 
     @ModifyConstant(method = "<init>", constant = @Constant(intValue = 39))
     public int injectedConstant4(int value) {
-        return value - 39 + HOTBAR_SIZE + INVENTORY_SIZE + 4 - 1;
+        return HOTBAR_END - HOTBAR_START + INVENTORY_END - INVENTORY_START + 4 - 1;
     }
 
     @ModifyConstant(method = "quickMove", constant = @Constant(intValue = 45))

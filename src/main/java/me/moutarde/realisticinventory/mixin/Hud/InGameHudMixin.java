@@ -1,8 +1,6 @@
 package me.moutarde.realisticinventory.mixin.Hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.moutarde.realisticinventory.mixin.Hud.InGameHudAccessor;
-import me.moutarde.realisticinventory.mixin.Hud.InGameHudInvoker;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.option.AttackIndicator;
@@ -12,8 +10,9 @@ import net.minecraft.util.Arm;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
-import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
 import static net.minecraft.client.gui.widget.ClickableWidget.WIDGETS_TEXTURE;
+import static net.minecraft.screen.PlayerScreenHandler.HOTBAR_END;
+import static net.minecraft.screen.PlayerScreenHandler.HOTBAR_START;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
@@ -49,10 +48,10 @@ public abstract class InGameHudMixin {
             int n;
             int o;
             final int offset = 4 * 20;
-            for(m = 0; m < HOTBAR_SIZE; ++m) {
+            for(m = 0; m < HOTBAR_END - HOTBAR_START; ++m) {
                 n = i - 90 + m * 20 + 2 + offset;
                 o = context.getScaledWindowHeight() - 16 - 3;
-                ((InGameHudInvoker) this).invokeRenderHotbarItem(context, n, o, tickDelta, playerEntity, (ItemStack)playerEntity.getInventory().main.get(m), l++);
+                ((InGameHudInvoker) this).invokeRenderHotbarItem(context, n, o, tickDelta, playerEntity, playerEntity.getInventory().main.get(m), l++);
             }
 
             if (!itemStack.isEmpty()) {
@@ -65,7 +64,6 @@ public abstract class InGameHudMixin {
             }
 
             RenderSystem.enableBlend();
-
 
             if (((InGameHudAccessor) this).getClient().options.getAttackIndicator().getValue() == AttackIndicator.HOTBAR) {
                 float f = ((InGameHudAccessor) this).getClient().player.getAttackCooldownProgress(0.0F);

@@ -11,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
+import static net.minecraft.screen.PlayerScreenHandler.HOTBAR_END;
+import static net.minecraft.screen.PlayerScreenHandler.HOTBAR_START;
 
 @Mixin(CreativeInventoryScreen.CreativeScreenHandler.class)
 public abstract class CreativeScreenHandlerMixin {
@@ -26,7 +27,7 @@ public abstract class CreativeScreenHandlerMixin {
         PlayerInventory playerInventory = player.getInventory();
 
         final int offset = 18 * 4;
-        for (i = 0; i < HOTBAR_SIZE; ++i) {
+        for (i = 0; i < HOTBAR_END - HOTBAR_START; ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, i, 9 + i * 18 + offset, 112));
         }
     }

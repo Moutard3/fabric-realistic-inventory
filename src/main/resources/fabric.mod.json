@@ -26,5 +26,11 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "accessWidener": "realistic-inventory.accesswidener",
+  "custom": {
+    "loom:injected_interfaces": {
+      "net/minecraft/class_1657": ["me/moutarde/realisticinventory/PlayerEntityExtends"]
+    }
   }
 }

@@ -5,14 +5,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
-import static me.moutarde.realisticinventory.mixin.Player.PlayerScreenHandlerMixin.*;
+import static net.minecraft.screen.PlayerScreenHandler.*;
 
 @Mixin(HandledScreen.class)
 public class HandledScreenMixin {
     @ModifyConstant(method = "onMouseClick(I)V", constant = @Constant(intValue = 9))
     public int injected(int value) {
-        return HOTBAR_SIZE;
+        return HOTBAR_END - HOTBAR_START;
     }
 
     @ModifyConstant(method = "onMouseClick(I)V", constant = @Constant(intValue = 40))
@@ -22,7 +21,7 @@ public class HandledScreenMixin {
 
     @ModifyConstant(method = "handleHotbarKeyPressed", constant = @Constant(intValue = 9))
     public int injected2(int value) {
-        return HOTBAR_SIZE;
+        return HOTBAR_END - HOTBAR_START;
     }
 
     @ModifyConstant(method = "handleHotbarKeyPressed", constant = @Constant(intValue = 40))

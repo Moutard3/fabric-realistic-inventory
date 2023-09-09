@@ -1,0 +1,12 @@
+accessWidener v2 named
+
+mutable field net/minecraft/screen/PlayerScreenHandler INVENTORY_END I
+mutable field net/minecraft/screen/PlayerScreenHandler HOTBAR_START I
+mutable field net/minecraft/screen/PlayerScreenHandler HOTBAR_END I
+mutable field net/minecraft/screen/PlayerScreenHandler OFFHAND_ID I
+mutable field net/minecraft/entity/player/PlayerInventory MAIN_SIZE I
+mutable field net/minecraft/entity/player/PlayerInventory HOTBAR_SIZE I
+mutable field net/minecraft/entity/player/PlayerInventory main Lnet/minecraft/util/collection/DefaultedList;
+accessible field net/minecraft/entity/player/PlayerInventory combinedInventory Ljava/util/List;
+mutable field net/minecraft/entity/player/PlayerInventory combinedInventory Ljava/util/List;
+mutable field net/minecraft/entity/player/PlayerEntity playerScreenHandler Lnet/minecraft/screen/PlayerScreenHandler;

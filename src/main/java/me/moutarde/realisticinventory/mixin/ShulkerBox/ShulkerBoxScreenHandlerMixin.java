@@ -3,7 +3,6 @@ package me.moutarde.realisticinventory.mixin.ShulkerBox;
 import me.moutarde.realisticinventory.mixin.ScreenHandlerInvoker;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.screen.HopperScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,8 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
-import static me.moutarde.realisticinventory.Realistic_inventory.INVENTORY_SIZE;
+import static net.minecraft.screen.PlayerScreenHandler.*;
 
 @Mixin(ShulkerBoxScreenHandler.class)
 public class ShulkerBoxScreenHandlerMixin {
@@ -40,12 +38,12 @@ public class ShulkerBoxScreenHandlerMixin {
     @Inject(method = "<init>(ILnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/inventory/Inventory;)V", at = @At("TAIL"))
     public void injected(int syncId, PlayerInventory playerInventory, Inventory inventory, CallbackInfo ci) {
         int i;
-        for(i = 0; i < INVENTORY_SIZE; ++i) {
-            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, HOTBAR_SIZE + i, 8 + (i%9) * 18, 84 + (i/9) * 18));
+        for(i = 0; i < INVENTORY_END - INVENTORY_START; ++i) {
+            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, HOTBAR_END - HOTBAR_START + i, 8 + (i%9) * 18, 84 + (i/9) * 18));
         }
 
         final int offset = 18 * 4;
-        for (i = 0; i < HOTBAR_SIZE; ++i) {
+        for (i = 0; i < HOTBAR_END - HOTBAR_START; ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, i, offset + 8 + i * 18, 142));
         }
     }
