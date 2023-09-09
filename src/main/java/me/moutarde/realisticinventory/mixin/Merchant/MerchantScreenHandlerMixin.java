@@ -35,12 +35,12 @@ public class MerchantScreenHandlerMixin {
     @Inject(method = "<init>(ILnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/village/Merchant;)V", at = @At(value = "TAIL"))
     public void injected(int syncId, PlayerInventory playerInventory, Merchant merchant, CallbackInfo ci) {
         int i;
-        for(i = 0; i < INVENTORY_END - INVENTORY_START; ++i) {
+        for(i = 0; i < playerInventory.player.realistic_inventory$getInventorySlots(); ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, HOTBAR_END - HOTBAR_START + i, 108 + (i%9) * 18, 84 + (i/9) * 18));
         }
 
         final int offset = 18 * 4;
-        for (i = 0; i < HOTBAR_END - HOTBAR_START; ++i) {
+        for (i = 0; i < playerInventory.player.realistic_inventory$getHotbarSlots(); ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, i, offset + 108 + i * 18, 142));
         }
     }

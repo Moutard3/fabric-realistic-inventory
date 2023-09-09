@@ -3,6 +3,9 @@ package me.moutarde.realisticinventory.client;
 import me.moutarde.realisticinventory.Realistic_inventory;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class Realistic_inventoryClient implements ClientModInitializer {
     /**
@@ -16,6 +19,9 @@ public class Realistic_inventoryClient implements ClientModInitializer {
             client.execute(() -> {
                 if (client.player != null) {
                     Realistic_inventory.changeInventorySize(inventorySize, client.player);
+                    if (client.player.getWorld().isClient && MinecraftClient.getInstance().currentScreen instanceof InventoryScreen) {
+                        MinecraftClient.getInstance().setScreen(new InventoryScreen(client.player));
+                    }
                 }
             });
         });

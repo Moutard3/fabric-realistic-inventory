@@ -35,20 +35,21 @@ public class Realistic_inventory implements ModInitializer {
         ServerEntityEvents.EQUIPMENT_CHANGE.register((livingEntity, equipmentSlot, previousStack, currentStack) -> {
             if (!livingEntity.isPlayer() || !equipmentSlot.isArmorSlot() || equipmentSlot != EquipmentSlot.LEGS) return;
 
-            int currentSize = PlayerScreenHandler.INVENTORY_END - PlayerScreenHandler.INVENTORY_START;
+            ServerPlayerEntity player = (ServerPlayerEntity) livingEntity;
+
+            int currentSize = player.realistic_inventory$getInventorySlots();
             int newSize = currentSize + (previousStack.getCount() > currentStack.getCount() ? -2 : 2);
-            Realistic_inventory.changeInventorySize(newSize, (PlayerEntity) livingEntity);
+
+            if (previousStack.getCount() != currentStack.getCount()) {
+                Realistic_inventory.changeInventorySize(newSize, (PlayerEntity) livingEntity);
+            }
         });
     }
 
     public static void changeInventorySize(int size, PlayerEntity player) {
         boolean isClient = player.getWorld().isClient;
 
-        PlayerScreenHandler.INVENTORY_END = PlayerScreenHandler.INVENTORY_START + size;
-        PlayerScreenHandler.HOTBAR_START = PlayerScreenHandler.INVENTORY_END;
-        PlayerScreenHandler.HOTBAR_END = PlayerScreenHandler.HOTBAR_START + HOTBAR_SIZE;
-        PlayerScreenHandler.OFFHAND_ID = PlayerScreenHandler.HOTBAR_END;
-        PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START;
+        player.realistic_inventory$setInventorySlots(size);
 
         if (!isClient) {
             ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
@@ -61,6 +62,12 @@ public class Realistic_inventory implements ModInitializer {
 
             serverPlayer.onSpawn();
         } else {
+            PlayerScreenHandler.INVENTORY_END = PlayerScreenHandler.INVENTORY_START + size;
+            PlayerScreenHandler.HOTBAR_START = PlayerScreenHandler.INVENTORY_END;
+            PlayerScreenHandler.HOTBAR_END = PlayerScreenHandler.HOTBAR_START + HOTBAR_SIZE;
+            PlayerScreenHandler.OFFHAND_ID = PlayerScreenHandler.HOTBAR_END;
+            PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START;
+
             player.realistic_inventory$refreshPlayerScreenHandler();
         }
     }

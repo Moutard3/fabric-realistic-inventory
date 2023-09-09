@@ -33,12 +33,12 @@ public abstract class GenericContainerScreenHandlerMixin {
             }
         }
 
-        for(j = 0; j < INVENTORY_END - INVENTORY_START; ++j) {
-            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, HOTBAR_END - HOTBAR_START + j, 8 + (j%9) * 18, 103 + (j/9) * 18 + i));
+        for(j = 0; j < playerInventory.player.realistic_inventory$getInventorySlots(); ++j) {
+            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, playerInventory.player.realistic_inventory$getHotbarSlots() + j, 8 + (j%9) * 18, 103 + (j/9) * 18 + i));
         }
 
         final int offset = 18 * 4;
-        for (j = 0; j < HOTBAR_END - HOTBAR_START; ++j) {
+        for (j = 0; j < playerInventory.player.realistic_inventory$getHotbarSlots(); ++j) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, j, 8 + j * 18 + offset, 161 + i));
         }
     }

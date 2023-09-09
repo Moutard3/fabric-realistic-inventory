@@ -4,75 +4,59 @@
   "package": "me.moutarde.realisticinventory.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ForgingScreenHandlerMixin",
-    "ForgingScreenMixin",
-
-    "Generic3x3ContainerScreenHandlerMixin",
-    "Generic3x3ContainerScreenMixin",
-
-    "GenericContainerScreenHandlerMixin",
-    "GenericContainerScreenMixin",
-
-    "HandledScreenAccessor",
-    "HandledScreenMixin",
-
-    "MinecraftClientMixin",
-
     "ScreenHandlerInvoker",
 
+    "ForgingScreenHandlerMixin",
+    "Generic3x3ContainerScreenHandlerMixin",
+    "GenericContainerScreenHandlerMixin",
     "Beacon.BeaconScreenHandlerMixin",
-    "Beacon.BeaconScreenMixin",
-
     "BrewingStand.BrewingStandScreenHandlerMixin",
-    "BrewingStand.BrewingStandScreenMixin",
-
     "CartographyTable.CartographyTableScreenHandlerMixin",
-    "CartographyTable.CartographyTableScreenMixin",
-
     "CraftingTable.CraftingScreenHandlerMixin",
-    "CraftingTable.CraftingScreenMixin",
-
-    "Creative.CreativeInventoryScreenAccessor",
-    "Creative.CreativeInventoryScreenMixin",
-    "Creative.CreativeScreenHandlerMixin",
-
     "EnchantingTable.EnchantmentScreenHandlerMixin",
-    "EnchantingTable.EnchantmentScreenMixin",
-
     "Furnace.AbstractFurnaceScreenHandlerMixin",
-    "Furnace.AbstractFurnaceScreenMixin",
-
     "GrindingStone.GrindstoneScreenHandlerMixin",
-    "GrindingStone.GrindstoneScreenMixin",
-
     "Hopper.HopperScreenHandlerMixin",
-    "Hopper.HopperScreenMixin",
-
     "Horse.HorseScreenHandlerMixin",
-    "Horse.HorseScreenMixin",
+    "Loom.LoomScreenHandlerMixin",
+    "Merchant.MerchantScreenHandlerMixin",
+    "ShulkerBox.ShulkerBoxScreenHandlerMixin",
+    "Stonecutter.StonecutterScreenHandlerMixin",
+
+    "Player.PlayerEntityMixin",
+    "Player.PlayerInventoryMixin",
+    "Player.PlayerScreenHandlerMixin"
+  ],
+  "client": [
+    "MinecraftClientMixin",
+
+    "HandledScreenAccessor",
 
     "Hud.InGameHudAccessor",
     "Hud.InGameHudInvoker",
     "Hud.InGameHudMixin",
 
-    "Loom.LoomScreenHandlerMixin",
+    "Creative.CreativeScreenHandlerMixin",
+    "Creative.CreativeInventoryScreenAccessor",
+    "ForgingScreenMixin",
+    "Generic3x3ContainerScreenMixin",
+    "GenericContainerScreenMixin",
+    "HandledScreenMixin",
+    "Beacon.BeaconScreenMixin",
+    "BrewingStand.BrewingStandScreenMixin",
+    "CartographyTable.CartographyTableScreenMixin",
+    "CraftingTable.CraftingScreenMixin",
+    "Creative.CreativeInventoryScreenMixin",
+    "EnchantingTable.EnchantmentScreenMixin",
+    "Furnace.AbstractFurnaceScreenMixin",
+    "GrindingStone.GrindstoneScreenMixin",
+    "Hopper.HopperScreenMixin",
+    "Horse.HorseScreenMixin",
     "Loom.LoomScreenMixin",
-
-    "Merchant.MerchantScreenHandlerMixin",
     "Merchant.MerchantScreenMixin",
-
     "Player.InventoryScreenMixin",
-    "Player.PlayerEntityMixin",
-    "Player.PlayerInventoryMixin",
-    "Player.PlayerScreenHandlerMixin",
-
-    "ShulkerBox.ShulkerBoxScreenHandlerMixin",
     "ShulkerBox.ShulkerBoxScreenMixin",
-
-    "Stonecutter.StonecutterScreenHandlerMixin",
     "Stonecutter.StonecutterScreenMixin"
-  ],
-  "client": [
   ],
   "injectors": {
     "defaultRequire": 1

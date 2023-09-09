@@ -11,8 +11,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import static net.minecraft.client.gui.widget.ClickableWidget.WIDGETS_TEXTURE;
-import static net.minecraft.screen.PlayerScreenHandler.HOTBAR_END;
-import static net.minecraft.screen.PlayerScreenHandler.HOTBAR_START;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
@@ -48,7 +46,7 @@ public abstract class InGameHudMixin {
             int n;
             int o;
             final int offset = 4 * 20;
-            for(m = 0; m < HOTBAR_END - HOTBAR_START; ++m) {
+            for(m = 0; m < playerEntity.realistic_inventory$getHotbarSlots(); ++m) {
                 n = i - 90 + m * 20 + 2 + offset;
                 o = context.getScaledWindowHeight() - 16 - 3;
                 ((InGameHudInvoker) this).invokeRenderHotbarItem(context, n, o, tickDelta, playerEntity, playerEntity.getInventory().main.get(m), l++);
