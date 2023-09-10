@@ -20,7 +20,7 @@ public class Realistic_inventoryClient implements ClientModInitializer {
             client.execute(() -> {
                 if (client.player != null) {
                     Realistic_inventory.changeInventorySize(inventorySize, client.player);
-                    if (MinecraftClient.getInstance().currentScreen instanceof InventoryScreen || MinecraftClient.getInstance().currentScreen instanceof CreativeInventoryScreen) {
+                    if (client.currentScreen instanceof InventoryScreen || client.currentScreen instanceof CreativeInventoryScreen) {
                         MinecraftClient.getInstance().setScreen(new InventoryScreen(client.player));
                     }
                 }
