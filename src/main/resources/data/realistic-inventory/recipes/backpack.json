@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "LLL",
+    "SLS",
     "LIL",
-    "LLL"
+    "SLS"
   ],
   "key": {
     "L": {
@@ -11,6 +11,9 @@
     },
     "I": {
       "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:string"
     }
   },
   "result": {
