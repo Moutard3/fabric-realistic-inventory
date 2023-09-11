@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 
 public class Realistic_inventoryClient implements ClientModInitializer {
     /**
@@ -19,7 +19,7 @@ public class Realistic_inventoryClient implements ClientModInitializer {
 
             client.execute(() -> {
                 if (client.player != null) {
-                    Realistic_inventory.changeInventorySize(inventorySize, client.player);
+                    Realistic_inventory.changeInventorySize(inventorySize, client.player, ItemStack.EMPTY);
                     if (client.currentScreen instanceof InventoryScreen || client.currentScreen instanceof CreativeInventoryScreen) {
                         MinecraftClient.getInstance().setScreen(new InventoryScreen(client.player));
                     }

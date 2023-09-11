@@ -3,7 +3,6 @@ package me.moutarde.realisticinventory;
 import me.moutarde.realisticinventory.items.BackpackItem;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.item.v1.EquipmentSlotProvider;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -55,37 +54,60 @@ public class Realistic_inventory implements ModInitializer {
             content.add(BACKPACK_ITEM);
         });
 
+        ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
+            if (!entity.isPlayer()) return;
+
+            ServerPlayerEntity player = (ServerPlayerEntity) entity;
+
+            int newSize = INVENTORY_SIZE;
+
+            if (player.getEquippedStack(EquipmentSlot.CHEST).getItem() instanceof BackpackItem) {
+                newSize += 9;
+                player.realistic_inventory$setHasBackpack(true);
+            }
+
+            if (!player.getEquippedStack(EquipmentSlot.LEGS).isEmpty()) {
+                newSize += 2;
+            }
+
+            Realistic_inventory.changeInventorySize(newSize, (PlayerEntity) entity, ItemStack.EMPTY);
+        });
+
         ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
             if (entity.isPlayer()) {
-                Realistic_inventory.changeInventorySize(INVENTORY_SIZE, (PlayerEntity) entity);
+                Realistic_inventory.changeInventorySize(27, (PlayerEntity) entity, ItemStack.EMPTY);
             }
         });
 
+        registerEquipmentChangeEvent();
+    }
+
+    private static void registerEquipmentChangeEvent() {
         ServerEntityEvents.EQUIPMENT_CHANGE.register((livingEntity, equipmentSlot, previousStack, currentStack) -> {
-            if (!livingEntity.isPlayer() || !equipmentSlot.isArmorSlot()) return;
+            if (!livingEntity.isPlayer() || !equipmentSlot.isArmorSlot() || previousStack.getCount() == currentStack.getCount()) return;
 
             ServerPlayerEntity player = (ServerPlayerEntity) livingEntity;
 
-            int currentSize = player.realistic_inventory$getInventorySlots();
+            int oldSize = player.realistic_inventory$getInventorySlots();
+            int newSize = INVENTORY_SIZE;
 
-            if (equipmentSlot == EquipmentSlot.LEGS) {
-                int newSize = currentSize + (previousStack.getCount() > currentStack.getCount() ? -2 : 2);
-
-                if (previousStack.getCount() != currentStack.getCount()) {
-                    Realistic_inventory.changeInventorySize(newSize, (PlayerEntity) livingEntity);
-                }
-            } else if (equipmentSlot == EquipmentSlot.CHEST
-                    && (previousStack.isOf(BACKPACK_ITEM) || currentStack.isOf(BACKPACK_ITEM))
-            ) {
-                int newSize = currentSize + (previousStack.getCount() > currentStack.getCount() ? -9 : 9);
-                if (previousStack.getCount() != currentStack.getCount()) {
-                    Realistic_inventory.changeInventorySize(newSize, (PlayerEntity) livingEntity);
-                }
+            if (equipmentSlot == EquipmentSlot.CHEST && (previousStack.isOf(BACKPACK_ITEM) || currentStack.isOf(BACKPACK_ITEM))) {
+                player.realistic_inventory$setHasBackpack(currentStack.getCount() > previousStack.getCount());
             }
+
+            if (player.getEquippedStack(EquipmentSlot.CHEST).getItem() instanceof BackpackItem) {
+                newSize += 9;
+            }
+
+            if (!player.getEquippedStack(EquipmentSlot.LEGS).isEmpty()) {
+                newSize += 2;
+            }
+
+            Realistic_inventory.changeInventorySize(newSize, player, newSize > oldSize ? currentStack : previousStack);
         });
     }
 
-    public static void changeInventorySize(int size, PlayerEntity player) {
+    public static void changeInventorySize(int size, PlayerEntity player, ItemStack itemStack) {
         boolean isClient = player.getWorld().isClient;
 
         player.realistic_inventory$setInventorySlots(size);
@@ -97,7 +119,7 @@ public class Realistic_inventory implements ModInitializer {
             buf.writeInt(size);
             ServerPlayNetworking.send(serverPlayer, CHANGE_INVENTORY_SIZE_PACKET_ID, buf);
 
-            serverPlayer.realistic_inventory$refreshPlayerScreenHandler();
+            serverPlayer.realistic_inventory$refreshPlayerScreenHandler(itemStack);
 
             serverPlayer.onSpawn();
         } else {
@@ -107,7 +129,7 @@ public class Realistic_inventory implements ModInitializer {
             PlayerScreenHandler.OFFHAND_ID = PlayerScreenHandler.HOTBAR_END;
             PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START;
 
-            player.realistic_inventory$refreshPlayerScreenHandler();
+            player.realistic_inventory$refreshPlayerScreenHandler(itemStack);
         }
     }
 }

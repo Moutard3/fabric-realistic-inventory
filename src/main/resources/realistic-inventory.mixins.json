@@ -5,7 +5,6 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ScreenHandlerInvoker",
-
     "ForgingScreenHandlerMixin",
     "Generic3x3ContainerScreenHandlerMixin",
     "GenericContainerScreenHandlerMixin",
@@ -20,38 +19,35 @@
     "Horse.HorseScreenHandlerMixin",
     "Loom.LoomScreenHandlerMixin",
     "Merchant.MerchantScreenHandlerMixin",
-    "ShulkerBox.ShulkerBoxScreenHandlerMixin",
-    "Stonecutter.StonecutterScreenHandlerMixin",
-
     "Player.PlayerEntityMixin",
     "Player.PlayerInventoryMixin",
-    "Player.PlayerScreenHandlerMixin"
+    "Player.PlayerScreenHandlerMixin",
+    "Player.ServerPlayerEntityMixin",
+    "ShulkerBox.ShulkerBoxScreenHandlerMixin",
+    "Stonecutter.StonecutterScreenHandlerMixin"
   ],
   "client": [
-    "MinecraftClientMixin",
-
-    "HandledScreenAccessor",
-
-    "Hud.InGameHudAccessor",
-    "Hud.InGameHudInvoker",
-    "Hud.InGameHudMixin",
-
-    "Creative.CreativeScreenHandlerMixin",
-    "Creative.CreativeInventoryScreenAccessor",
     "ForgingScreenMixin",
     "Generic3x3ContainerScreenMixin",
     "GenericContainerScreenMixin",
+    "HandledScreenAccessor",
     "HandledScreenMixin",
+    "MinecraftClientMixin",
     "Beacon.BeaconScreenMixin",
     "BrewingStand.BrewingStandScreenMixin",
     "CartographyTable.CartographyTableScreenMixin",
     "CraftingTable.CraftingScreenMixin",
+    "Creative.CreativeInventoryScreenAccessor",
     "Creative.CreativeInventoryScreenMixin",
+    "Creative.CreativeScreenHandlerMixin",
     "EnchantingTable.EnchantmentScreenMixin",
     "Furnace.AbstractFurnaceScreenMixin",
     "GrindingStone.GrindstoneScreenMixin",
     "Hopper.HopperScreenMixin",
     "Horse.HorseScreenMixin",
+    "Hud.InGameHudAccessor",
+    "Hud.InGameHudInvoker",
+    "Hud.InGameHudMixin",
     "Loom.LoomScreenMixin",
     "Merchant.MerchantScreenMixin",
     "Player.InventoryScreenMixin",

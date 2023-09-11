@@ -10,8 +10,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 
-import static net.minecraft.screen.PlayerScreenHandler.*;
 import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
+import static net.minecraft.screen.PlayerScreenHandler.HOTBAR_END;
+import static net.minecraft.screen.PlayerScreenHandler.INVENTORY_START;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryMixin {
