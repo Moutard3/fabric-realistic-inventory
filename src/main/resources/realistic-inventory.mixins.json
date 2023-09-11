@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ScreenHandlerInvoker",
+    "ScreenHandlerMixin",
     "ForgingScreenHandlerMixin",
     "Generic3x3ContainerScreenHandlerMixin",
     "GenericContainerScreenHandlerMixin",
