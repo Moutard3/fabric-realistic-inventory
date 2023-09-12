@@ -1,12 +1,19 @@
 package me.moutarde.realisticinventory.client;
 
 import me.moutarde.realisticinventory.Realistic_inventory;
+import me.moutarde.realisticinventory.items.BackpackItem;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.PlayerScreenHandler;
+
+import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
 
 public class Realistic_inventoryClient implements ClientModInitializer {
     /**
@@ -19,12 +26,30 @@ public class Realistic_inventoryClient implements ClientModInitializer {
 
             client.execute(() -> {
                 if (client.player != null) {
-                    Realistic_inventory.changeInventorySize(inventorySize, client.player, ItemStack.EMPTY);
+                    ItemStack backpackStack = client.player.getInventory().getStack(client.player.realistic_inventory$getInventorySlots() + client.player.realistic_inventory$getHotbarSlots());
+
+                    client.player.realistic_inventory$setHasBackpack(backpackStack.getItem() instanceof BackpackItem);
+
+                    Realistic_inventory.changeInventorySize(inventorySize, client.player, client.player.getInventory().getStack(client.player.realistic_inventory$getInventorySlots() + client.player.realistic_inventory$getHotbarSlots()));
                     if (client.currentScreen instanceof InventoryScreen || client.currentScreen instanceof CreativeInventoryScreen) {
                         MinecraftClient.getInstance().setScreen(new InventoryScreen(client.player));
                     }
                 }
             });
+        });
+
+        ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
+            if (!entity.isPlayer()) return;
+
+            PlayerEntity player = (PlayerEntity) entity;
+
+            player.realistic_inventory$setInventorySlots(27);
+            PlayerScreenHandler.INVENTORY_END = PlayerScreenHandler.INVENTORY_START + 27;
+            PlayerScreenHandler.HOTBAR_START = PlayerScreenHandler.INVENTORY_END;
+            PlayerScreenHandler.HOTBAR_END = PlayerScreenHandler.HOTBAR_START + HOTBAR_SIZE;
+            PlayerScreenHandler.OFFHAND_ID = PlayerScreenHandler.HOTBAR_END;
+            PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START + 1;
+            player.realistic_inventory$refreshPlayerScreenHandler(ItemStack.EMPTY);
         });
     }
 }

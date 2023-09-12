@@ -17,7 +17,7 @@ public class ScreenHandlerMixin {
     {
         if (player instanceof ServerPlayerEntity && player.realistic_inventory$hasBackpack()) {
             BackpackItem.saveBackpack(
-                    player.getEquippedStack(EquipmentSlot.CHEST),
+                    player.getInventory().getStack(player.realistic_inventory$getHotbarSlots() + player.realistic_inventory$getInventorySlots()),
                     player.getInventory().main.subList(player.realistic_inventory$getHotbarSlots(), player.realistic_inventory$getHotbarSlots() + 9)
             );
         }

@@ -1,6 +1,9 @@
 package me.moutarde.realisticinventory.mixin.Player;
 
+import me.moutarde.realisticinventory.items.BackpackChangeCallback;
 import me.moutarde.realisticinventory.items.BackpackItem;
+import me.moutarde.realisticinventory.items.BackpackSlot;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
@@ -29,11 +32,16 @@ public abstract class ServerPlayerEntityMixin {
             }
             ServerPlayerEntity player = ((ServerPlayerEntity) (Object) ServerPlayerEntityMixin.this);
 
+            if (slot instanceof BackpackSlot) {
+                BackpackChangeCallback.EVENT.invoker().onChange(player, stack.getItem() instanceof BackpackItem);
+                return;
+            }
+
             if (slotId >= INVENTORY_START &&
                     slotId < INVENTORY_START + 9 &&
                     player.realistic_inventory$hasBackpack()
             ) {
-                BackpackItem.saveBackpackSlot(player.getEquippedStack(EquipmentSlot.CHEST), slotId - INVENTORY_START, stack);
+                BackpackItem.saveBackpackSlot(player.getInventory().getStack(player.realistic_inventory$getHotbarSlots() + player.realistic_inventory$getInventorySlots()), slotId - INVENTORY_START, stack);
             }
         }
 

@@ -1,7 +1,9 @@
 package me.moutarde.realisticinventory;
 
+import me.moutarde.realisticinventory.items.BackpackChangeCallback;
 import me.moutarde.realisticinventory.items.BackpackItem;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -29,12 +31,12 @@ public class Realistic_inventory implements ModInitializer {
     public final static int HOTBAR_SIZE = 1;
 
     public static final Identifier SLOT_TEXTURE = new Identifier("textures/gui/container/slot.png");
+    public static final Identifier BACKPACK_SLOT_TEXTURE = new Identifier("textures/gui/container/backpack_slot.png");
     public static final Identifier CHANGE_INVENTORY_SIZE_PACKET_ID = new Identifier(MOD_ID, "change_inventory_size");
 
     public static final Item BACKPACK_ITEM = new BackpackItem(
             new FabricItemSettings()
                     .maxCount(1)
-                    .equipmentSlot(stack -> EquipmentSlot.CHEST)
     );
 
     private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
@@ -60,17 +62,19 @@ public class Realistic_inventory implements ModInitializer {
             ServerPlayerEntity player = (ServerPlayerEntity) entity;
 
             int newSize = INVENTORY_SIZE;
+            ItemStack itemStack = ItemStack.EMPTY;
 
-            if (player.getEquippedStack(EquipmentSlot.CHEST).getItem() instanceof BackpackItem) {
+            if (player.getInventory().getStack(player.getInventory().main.size() - 1).getItem() instanceof BackpackItem) {
                 newSize += 9;
                 player.realistic_inventory$setHasBackpack(true);
+                itemStack = player.getInventory().getStack(player.getInventory().main.size() - 1);
             }
 
             if (!player.getEquippedStack(EquipmentSlot.LEGS).isEmpty()) {
                 newSize += 2;
             }
 
-            Realistic_inventory.changeInventorySize(newSize, (PlayerEntity) entity, ItemStack.EMPTY);
+            Realistic_inventory.changeInventorySize(newSize, (PlayerEntity) entity, itemStack);
         });
 
         ServerEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
@@ -80,22 +84,21 @@ public class Realistic_inventory implements ModInitializer {
         });
 
         registerEquipmentChangeEvent();
+        registerBackpackChangeEvent();
     }
 
     private static void registerEquipmentChangeEvent() {
         ServerEntityEvents.EQUIPMENT_CHANGE.register((livingEntity, equipmentSlot, previousStack, currentStack) -> {
-            if (!livingEntity.isPlayer() || !equipmentSlot.isArmorSlot() || previousStack.getCount() == currentStack.getCount()) return;
+            if (!livingEntity.isPlayer() || previousStack == currentStack || equipmentSlot != EquipmentSlot.LEGS) return;
 
             ServerPlayerEntity player = (ServerPlayerEntity) livingEntity;
 
             int oldSize = player.realistic_inventory$getInventorySlots();
             int newSize = INVENTORY_SIZE;
 
-            if (equipmentSlot == EquipmentSlot.CHEST && (previousStack.isOf(BACKPACK_ITEM) || currentStack.isOf(BACKPACK_ITEM))) {
-                player.realistic_inventory$setHasBackpack(currentStack.getCount() > previousStack.getCount());
-            }
+            player.realistic_inventory$setHasBackpack(currentStack.isOf(BACKPACK_ITEM));
 
-            if (player.getEquippedStack(EquipmentSlot.CHEST).getItem() instanceof BackpackItem) {
+            if (player.getInventory().getStack(player.realistic_inventory$getInventorySlots() + player.realistic_inventory$getHotbarSlots()).getItem() instanceof BackpackItem) {
                 newSize += 9;
             }
 
@@ -103,7 +106,32 @@ public class Realistic_inventory implements ModInitializer {
                 newSize += 2;
             }
 
-            Realistic_inventory.changeInventorySize(newSize, player, newSize > oldSize ? currentStack : previousStack);
+            if (newSize != oldSize) {
+                Realistic_inventory.changeInventorySize(newSize, player, newSize > oldSize ? currentStack : previousStack);
+            }
+        });
+    }
+
+    private static void registerBackpackChangeEvent() {
+        BackpackChangeCallback.EVENT.register((player, isAdded) -> {
+            if (player.getWorld().isClient) return;
+
+            int oldSize = player.realistic_inventory$getInventorySlots();
+            int newSize = INVENTORY_SIZE;
+
+            player.realistic_inventory$setHasBackpack(isAdded);
+
+            if (isAdded) {
+                newSize += 9;
+            }
+
+            if (!player.getEquippedStack(EquipmentSlot.LEGS).isEmpty()) {
+                newSize += 2;
+            }
+
+            if (newSize != oldSize) {
+                Realistic_inventory.changeInventorySize(newSize, player, isAdded ? player.getInventory().getStack(player.realistic_inventory$getInventorySlots() + player.realistic_inventory$getHotbarSlots()) : ItemStack.EMPTY);
+            }
         });
     }
 
@@ -127,7 +155,7 @@ public class Realistic_inventory implements ModInitializer {
             PlayerScreenHandler.HOTBAR_START = PlayerScreenHandler.INVENTORY_END;
             PlayerScreenHandler.HOTBAR_END = PlayerScreenHandler.HOTBAR_START + HOTBAR_SIZE;
             PlayerScreenHandler.OFFHAND_ID = PlayerScreenHandler.HOTBAR_END;
-            PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START;
+            PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START + 1;
 
             player.realistic_inventory$refreshPlayerScreenHandler(itemStack);
         }

@@ -16,6 +16,11 @@ public class BackpackItem extends Item {
         super(settings);
     }
 
+    @Override
+    public boolean canBeNested() {
+        return false;
+    }
+
     public static void saveBackpack(ItemStack backpack, List<ItemStack> stacks) {
         backpack.removeSubNbt(ITEMS_KEY);
 
@@ -40,6 +45,13 @@ public class BackpackItem extends Item {
         }
 
         NbtList nbtItemsList = backpackNbt.getList(ITEMS_KEY, NbtElement.COMPOUND_TYPE);
+
+        for (int i = nbtItemsList.size(); i < 9; ++i) {
+            NbtCompound nbtCompound = new NbtCompound();
+            ItemStack.EMPTY.writeNbt(nbtCompound);
+            nbtItemsList.add(nbtCompound);
+        }
+
         ItemStack stackCopy = stack.copy();
         NbtCompound nbtCompound = new NbtCompound();
         stackCopy.writeNbt(nbtCompound);

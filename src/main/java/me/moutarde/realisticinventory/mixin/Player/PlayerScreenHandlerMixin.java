@@ -1,11 +1,15 @@
 package me.moutarde.realisticinventory.mixin.Player;
 
 import me.moutarde.realisticinventory.items.BackpackItem;
+import me.moutarde.realisticinventory.items.BackpackSlot;
 import me.moutarde.realisticinventory.mixin.ScreenHandlerInvoker;
+import net.minecraft.block.Block;
+import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,8 +17,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
+
 @Mixin(PlayerScreenHandler.class)
-public abstract class PlayerScreenHandlerMixin {
+public abstract class PlayerScreenHandlerMixin extends ScreenHandler {
     @Shadow @Final
     public static final int CRAFTING_RESULT_ID = 0;
     @Shadow @Final
@@ -27,16 +33,20 @@ public abstract class PlayerScreenHandlerMixin {
     public static final int EQUIPMENT_END = 9;
     @Shadow @Final
     public static final int INVENTORY_START = EQUIPMENT_END;
-//    @Shadow
-//    public static int INVENTORY_END = INVENTORY_START + INVENTORY_SIZE;
-//    @Shadow
-//    public static int HOTBAR_START = INVENTORY_END;
-//    @Shadow
-//    public static int HOTBAR_END = HOTBAR_START + HOTBAR_SIZE;
-//    @Shadow
-//    public static int OFFHAND_ID = HOTBAR_END;
+    @Shadow
+    public static int INVENTORY_END = INVENTORY_START + 27;
+    @Shadow
+    public static int HOTBAR_START = INVENTORY_END;
+    @Shadow
+    public static int HOTBAR_END = HOTBAR_START + HOTBAR_SIZE;
+    @Shadow
+    public static int OFFHAND_ID = HOTBAR_END;
 
     @Shadow @Final private PlayerEntity owner;
+
+    protected PlayerScreenHandlerMixin() {
+        super(null, 0);
+    }
 
     @Redirect(
             method = "<init>",
@@ -72,13 +82,16 @@ public abstract class PlayerScreenHandlerMixin {
                 @Override
                 public boolean canInsert(ItemStack stack) {
                     if (isBackpackSlot) {
-                        return !(stack.getItem() instanceof BackpackItem);
+                        return stack.getItem().canBeNested();
                     }
 
                     return super.canInsert(stack);
                 }
             });
         }
+
+        ((ScreenHandlerInvoker) this).invokeAddSlot(new BackpackSlot(inventory, owner.realistic_inventory$getHotbarSlots() + i, -17, 8+18));
+
 
         final int offset = 18 * 4;
         for (i = 0; i < owner.realistic_inventory$getHotbarSlots(); ++i) {
@@ -88,12 +101,12 @@ public abstract class PlayerScreenHandlerMixin {
 
     @ModifyConstant(method = "<init>", constant = @Constant(intValue = 40))
     public int injectedConstant3(int value) {
-        return INVENTORY_START + owner.realistic_inventory$getInventorySlots() + owner.realistic_inventory$getHotbarSlots() - 5;
+        return owner.realistic_inventory$getInventorySlots() + owner.realistic_inventory$getHotbarSlots() + 5;
     }
 
     @ModifyConstant(method = "<init>", constant = @Constant(intValue = 39))
     public int injectedConstant4(int value) {
-        return owner.realistic_inventory$getHotbarSlots() + owner.realistic_inventory$getInventorySlots() + 4 - 1;
+        return owner.realistic_inventory$getInventorySlots() + owner.realistic_inventory$getHotbarSlots() + 4;
     }
 
     @ModifyConstant(method = "quickMove", constant = @Constant(intValue = 45))
