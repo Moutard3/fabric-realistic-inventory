@@ -1,7 +1,6 @@
 package me.moutarde.realisticinventory.mixin;
 
 import me.moutarde.realisticinventory.items.BackpackItem;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;

@@ -3,7 +3,6 @@ package me.moutarde.realisticinventory;
 import me.moutarde.realisticinventory.items.BackpackChangeCallback;
 import me.moutarde.realisticinventory.items.BackpackItem;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -64,7 +63,7 @@ public class Realistic_inventory implements ModInitializer {
             int newSize = INVENTORY_SIZE;
             ItemStack itemStack = ItemStack.EMPTY;
 
-            if (player.getInventory().getStack(player.getInventory().main.size() - 1).getItem() instanceof BackpackItem) {
+            if (player.getInventory().getStack(player.getInventory().main.size() - 1).isOf(BACKPACK_ITEM)) {
                 newSize += 9;
                 player.realistic_inventory$setHasBackpack(true);
                 itemStack = player.getInventory().getStack(player.getInventory().main.size() - 1);
@@ -96,9 +95,11 @@ public class Realistic_inventory implements ModInitializer {
             int oldSize = player.realistic_inventory$getInventorySlots();
             int newSize = INVENTORY_SIZE;
 
-            player.realistic_inventory$setHasBackpack(currentStack.isOf(BACKPACK_ITEM));
+            ItemStack backpackStack = player.getInventory().getStack(player.realistic_inventory$getInventorySlots() + player.realistic_inventory$getHotbarSlots());
 
-            if (player.getInventory().getStack(player.realistic_inventory$getInventorySlots() + player.realistic_inventory$getHotbarSlots()).getItem() instanceof BackpackItem) {
+            player.realistic_inventory$setHasBackpack(backpackStack.isOf(BACKPACK_ITEM));
+
+            if (backpackStack.isOf(BACKPACK_ITEM)) {
                 newSize += 9;
             }
 

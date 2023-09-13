@@ -3,7 +3,6 @@ package me.moutarde.realisticinventory.mixin.Player;
 import com.google.common.collect.ImmutableList;
 import me.moutarde.realisticinventory.PlayerEntityExtends;
 import me.moutarde.realisticinventory.items.BackpackItem;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -43,6 +42,7 @@ public abstract class PlayerEntityMixin implements PlayerEntityExtends {
         DefaultedList<ItemStack> newInventory = DefaultedList.ofSize(inventorySlots + hotbarSlots + 1, ItemStack.EMPTY);
         int addedSlots = newInventory.size() - this.inventory.main.size();
         PlayerScreenHandler oldHandler = this.playerScreenHandler;
+        oldHandler.disableSyncing();
 
         if (addedSlots < 0 && !player.getWorld().isClient) {
             int slotsToThrow = Math.abs(addedSlots);
@@ -102,7 +102,9 @@ public abstract class PlayerEntityMixin implements PlayerEntityExtends {
         this.inventory.main = newInventory;
         this.inventory.combinedInventory = ImmutableList.of(this.inventory.main, this.inventory.armor, this.inventory.offHand);;
         this.playerScreenHandler = new PlayerScreenHandler(this.inventory, !((PlayerEntity) (Object) this).getWorld().isClient(), (PlayerEntity) (Object) this);
-        this.currentScreenHandler = ((PlayerEntity) (Object) this).playerScreenHandler;
+        if (this.currentScreenHandler instanceof PlayerScreenHandler) {
+            this.currentScreenHandler = ((PlayerEntity) (Object) this).playerScreenHandler;
+        }
         this.playerScreenHandler.setCursorStack(oldHandler.getCursorStack().getItem() == stack.getItem() ? stack : oldHandler.getCursorStack());
     }
 

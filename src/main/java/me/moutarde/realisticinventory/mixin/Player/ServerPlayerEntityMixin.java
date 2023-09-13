@@ -3,8 +3,6 @@ package me.moutarde.realisticinventory.mixin.Player;
 import me.moutarde.realisticinventory.items.BackpackChangeCallback;
 import me.moutarde.realisticinventory.items.BackpackItem;
 import me.moutarde.realisticinventory.items.BackpackSlot;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerListener;
@@ -17,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.moutarde.realisticinventory.Realistic_inventory.BACKPACK_ITEM;
 import static net.minecraft.screen.PlayerScreenHandler.INVENTORY_START;
 
 @Mixin(ServerPlayerEntity.class)
@@ -33,7 +32,7 @@ public abstract class ServerPlayerEntityMixin {
             ServerPlayerEntity player = ((ServerPlayerEntity) (Object) ServerPlayerEntityMixin.this);
 
             if (slot instanceof BackpackSlot) {
-                BackpackChangeCallback.EVENT.invoker().onChange(player, stack.getItem() instanceof BackpackItem);
+                BackpackChangeCallback.EVENT.invoker().onChange(player, stack.isOf(BACKPACK_ITEM));
                 return;
             }
 

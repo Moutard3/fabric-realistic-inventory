@@ -1,10 +1,7 @@
 package me.moutarde.realisticinventory.mixin.Player;
 
-import me.moutarde.realisticinventory.items.BackpackItem;
 import me.moutarde.realisticinventory.items.BackpackSlot;
 import me.moutarde.realisticinventory.mixin.ScreenHandlerInvoker;
-import net.minecraft.block.Block;
-import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;

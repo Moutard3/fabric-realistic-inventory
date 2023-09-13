@@ -3,7 +3,6 @@ package me.moutarde.realisticinventory.items;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.ActionResult;
 
 public interface BackpackChangeCallback {
     Event<BackpackChangeCallback> EVENT = EventFactory.createArrayBacked(BackpackChangeCallback.class,

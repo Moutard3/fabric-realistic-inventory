@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.moutarde.realisticinventory.Realistic_inventory.BACKPACK_SLOT_TEXTURE;
@@ -25,5 +26,10 @@ public abstract class InventoryScreenMixin {
         }
 
         context.drawTexture(BACKPACK_SLOT_TEXTURE, i - 17 - 8, j + 8 + 18 - 8, 0, 0.0f, 0.0f, 28, 32, 28, 32);
+    }
+
+    @ModifyVariable(method = "isClickOutsideBounds", at = @At("HEAD"), ordinal = 0)
+    private int injectBound(int left) {
+        return left - 17 - 8;
     }
 }

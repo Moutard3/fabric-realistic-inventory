@@ -1,7 +1,6 @@
 package me.moutarde.realisticinventory.client;
 
 import me.moutarde.realisticinventory.Realistic_inventory;
-import me.moutarde.realisticinventory.items.BackpackItem;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -13,6 +12,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.PlayerScreenHandler;
 
+import static me.moutarde.realisticinventory.Realistic_inventory.BACKPACK_ITEM;
 import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
 
 public class Realistic_inventoryClient implements ClientModInitializer {
@@ -28,7 +28,7 @@ public class Realistic_inventoryClient implements ClientModInitializer {
                 if (client.player != null) {
                     ItemStack backpackStack = client.player.getInventory().getStack(client.player.realistic_inventory$getInventorySlots() + client.player.realistic_inventory$getHotbarSlots());
 
-                    client.player.realistic_inventory$setHasBackpack(backpackStack.getItem() instanceof BackpackItem);
+                    client.player.realistic_inventory$setHasBackpack(backpackStack.isOf(BACKPACK_ITEM));
 
                     Realistic_inventory.changeInventorySize(inventorySize, client.player, client.player.getInventory().getStack(client.player.realistic_inventory$getInventorySlots() + client.player.realistic_inventory$getHotbarSlots()));
                     if (client.currentScreen instanceof InventoryScreen || client.currentScreen instanceof CreativeInventoryScreen) {
