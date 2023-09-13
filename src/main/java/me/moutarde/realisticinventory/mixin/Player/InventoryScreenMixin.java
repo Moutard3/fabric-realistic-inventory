@@ -8,6 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static me.moutarde.realisticinventory.Realistic_inventory.BACKPACK_SLOT_TEXTURE;
 import static me.moutarde.realisticinventory.Realistic_inventory.SLOT_TEXTURE;
@@ -28,8 +29,10 @@ public abstract class InventoryScreenMixin {
         context.drawTexture(BACKPACK_SLOT_TEXTURE, i - 17 - 8, j + 8 + 18 - 8, 0, 0.0f, 0.0f, 28, 32, 28, 32);
     }
 
-    @ModifyVariable(method = "isClickOutsideBounds", at = @At("HEAD"), ordinal = 0)
-    private int injectBound(int left) {
-        return left - 17 - 8;
+    @Inject(method = "isClickOutsideBounds", at = @At("RETURN"), cancellable = true)
+    private void injectBound(double mouseX, double mouseY, int left, int top, int button, CallbackInfoReturnable<Boolean> cir) {
+        boolean isBackpackSlot = mouseX > (double)left - 17 - 8 && mouseX < (double)left - 17 - 8 + 28 && mouseY > (double)top + 8 + 18 - 8 && mouseY < (double)top + 8 + 18 - 8 + 32;
+
+        cir.setReturnValue(cir.getReturnValue() && !isBackpackSlot);
     }
 }
