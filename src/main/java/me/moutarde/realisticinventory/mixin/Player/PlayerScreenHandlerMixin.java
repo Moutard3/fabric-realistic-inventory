@@ -108,12 +108,12 @@ public abstract class PlayerScreenHandlerMixin extends ScreenHandler {
 
     @ModifyConstant(method = "quickMove", constant = @Constant(intValue = 45))
     public int injectedConstant(int value) {
-        return INVENTORY_START + owner.realistic_inventory$getInventorySlots() + owner.realistic_inventory$getHotbarSlots();
+        return INVENTORY_START + owner.realistic_inventory$getInventorySlots() + owner.realistic_inventory$getHotbarSlots() + 1;
     }
 
     @ModifyConstant(method = "quickMove", constant = @Constant(intValue = 46))
     public int injectedConstant5(int value) {
-        return INVENTORY_START + owner.realistic_inventory$getInventorySlots() + owner.realistic_inventory$getHotbarSlots() + 1;
+        return INVENTORY_START + owner.realistic_inventory$getInventorySlots() + owner.realistic_inventory$getHotbarSlots() + 2;
     }
 
     @ModifyConstant(method = "quickMove", constant = @Constant(intValue = 36))

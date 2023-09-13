@@ -38,12 +38,12 @@ public class HopperScreenHandlerMixin {
     @Inject(method = "<init>(ILnet/minecraft/entity/player/PlayerInventory;Lnet/minecraft/inventory/Inventory;)V", at = @At("TAIL"))
     public void injected(int syncId, PlayerInventory playerInventory, Inventory inventory, CallbackInfo ci) {
         int i;
-        for(i = 0; i < INVENTORY_END - INVENTORY_START; ++i) {
-            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, HOTBAR_END - HOTBAR_START + i, 8 + (i%9) * 18, 51 + (i/9) * 18));
+        for(i = 0; i < playerInventory.player.realistic_inventory$getInventorySlots(); ++i) {
+            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, playerInventory.player.realistic_inventory$getHotbarSlots() + i, 8 + (i%9) * 18, 51 + (i/9) * 18));
         }
 
         final int offset = 18 * 4;
-        for (i = 0; i < HOTBAR_END - HOTBAR_START; ++i) {
+        for (i = 0; i < playerInventory.player.realistic_inventory$getHotbarSlots(); ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, i, offset + 8 + i * 18, 109));
         }
     }

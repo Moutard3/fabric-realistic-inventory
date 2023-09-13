@@ -27,7 +27,7 @@ public abstract class CreativeScreenHandlerMixin {
         PlayerInventory playerInventory = player.getInventory();
 
         final int offset = 18 * 4;
-        for (i = 0; i < HOTBAR_END - HOTBAR_START; ++i) {
+        for (i = 0; i < player.realistic_inventory$getHotbarSlots(); ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, i, 9 + i * 18 + offset, 112));
         }
     }

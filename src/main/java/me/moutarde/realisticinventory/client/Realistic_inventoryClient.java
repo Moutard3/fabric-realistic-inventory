@@ -37,19 +37,5 @@ public class Realistic_inventoryClient implements ClientModInitializer {
                 }
             });
         });
-
-        ClientEntityEvents.ENTITY_UNLOAD.register((entity, world) -> {
-            if (!entity.isPlayer()) return;
-
-            PlayerEntity player = (PlayerEntity) entity;
-
-            player.realistic_inventory$setInventorySlots(27);
-            PlayerScreenHandler.INVENTORY_END = PlayerScreenHandler.INVENTORY_START + 27;
-            PlayerScreenHandler.HOTBAR_START = PlayerScreenHandler.INVENTORY_END;
-            PlayerScreenHandler.HOTBAR_END = PlayerScreenHandler.HOTBAR_START + HOTBAR_SIZE;
-            PlayerScreenHandler.OFFHAND_ID = PlayerScreenHandler.HOTBAR_END;
-            PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START + 1;
-            player.realistic_inventory$refreshPlayerScreenHandler(ItemStack.EMPTY);
-        });
     }
 }

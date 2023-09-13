@@ -6,9 +6,9 @@
   "mixins": [
     "ScreenHandlerInvoker",
     "ScreenHandlerMixin",
-    "ForgingScreenHandlerMixin",
-    "Generic3x3ContainerScreenHandlerMixin",
-    "GenericContainerScreenHandlerMixin",
+    "Forging.ForgingScreenHandlerMixin",
+    "Generic3x3Container.Generic3x3ContainerScreenHandlerMixin",
+    "GenericContainer.GenericContainerScreenHandlerMixin",
     "Beacon.BeaconScreenHandlerMixin",
     "BrewingStand.BrewingStandScreenHandlerMixin",
     "CartographyTable.CartographyTableScreenHandlerMixin",
@@ -28,9 +28,9 @@
     "Stonecutter.StonecutterScreenHandlerMixin"
   ],
   "client": [
-    "ForgingScreenMixin",
-    "Generic3x3ContainerScreenMixin",
-    "GenericContainerScreenMixin",
+    "Forging.ForgingScreenMixin",
+    "Generic3x3Container.Generic3x3ContainerScreenMixin",
+    "GenericContainer.GenericContainerScreenMixin",
     "HandledScreenAccessor",
     "HandledScreenMixin",
     "MinecraftClientMixin",

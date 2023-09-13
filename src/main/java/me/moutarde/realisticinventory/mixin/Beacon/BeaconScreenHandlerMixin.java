@@ -1,6 +1,8 @@
 package me.moutarde.realisticinventory.mixin.Beacon;
 
 import me.moutarde.realisticinventory.mixin.ScreenHandlerInvoker;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.screen.BeaconScreenHandler;
 import net.minecraft.screen.PropertyDelegate;
@@ -35,24 +37,27 @@ public class BeaconScreenHandlerMixin {
     @Inject(method = "<init>(ILnet/minecraft/inventory/Inventory;Lnet/minecraft/screen/PropertyDelegate;Lnet/minecraft/screen/ScreenHandlerContext;)V", at = @At(value = "TAIL"))
     public void injected(int syncId, Inventory inventory, PropertyDelegate propertyDelegate, ScreenHandlerContext context, CallbackInfo ci) {
         int i;
-        for(i = 0; i < INVENTORY_END - INVENTORY_START; ++i) {
-            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(inventory, HOTBAR_END - HOTBAR_START + i, 36 + (i%9) * 18, 137 + (i/9) * 18));
+
+        PlayerInventory playerInventory = (PlayerInventory) inventory;
+
+        for(i = 0; i < playerInventory.player.realistic_inventory$getInventorySlots(); ++i) {
+            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(inventory, playerInventory.player.realistic_inventory$getHotbarSlots() + i, 36 + (i%9) * 18, 137 + (i/9) * 18));
         }
 
         final int offset = 18 * 4;
-        for (i = 0; i < HOTBAR_END - HOTBAR_START; ++i) {
+        for (i = 0; i < playerInventory.player.realistic_inventory$getHotbarSlots(); ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(inventory, i, offset + 36 + i * 18, 195));
         }
     }
 
     @ModifyConstant(method = "quickMove", constant = @Constant(intValue = 37))
-    public int injectedConstant(int value) {
-        return 1 + INVENTORY_END - INVENTORY_START + HOTBAR_END - HOTBAR_START;
+    public int injectedConstant(int value, PlayerEntity player) {
+        return 1 + player.realistic_inventory$getInventorySlots() + player.realistic_inventory$getHotbarSlots();
     }
 
     @ModifyConstant(method = "quickMove", constant = @Constant(intValue = 28))
-    public int injectedConstant2(int value) {
-        return 1 + INVENTORY_END - INVENTORY_START;
+    public int injectedConstant2(int value, PlayerEntity player) {
+        return 1 + player.realistic_inventory$getInventorySlots();
     }
 
 }

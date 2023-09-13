@@ -1,6 +1,7 @@
 package me.moutarde.realisticinventory.mixin.EnchantingTable;
 
 import me.moutarde.realisticinventory.mixin.ScreenHandlerInvoker;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -51,18 +52,18 @@ public abstract class EnchantmentScreenHandlerMixin {
             }
         });
 
-        for(i = 0; i < INVENTORY_END - INVENTORY_START; ++i) {
-            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, HOTBAR_END - HOTBAR_START + i, 8 + (i%9) * 18, 84 + (i/9) * 18));
+        for(i = 0; i < playerInventory.player.realistic_inventory$getInventorySlots(); ++i) {
+            ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, playerInventory.player.realistic_inventory$getHotbarSlots() + i, 8 + (i%9) * 18, 84 + (i/9) * 18));
         }
 
         final int offset = 18 * 4;
-        for (i = 0; i < HOTBAR_END - HOTBAR_START; ++i) {
+        for (i = 0; i < playerInventory.player.realistic_inventory$getHotbarSlots(); ++i) {
             ((ScreenHandlerInvoker) this).invokeAddSlot(new Slot(playerInventory, i, offset + 8 + i * 18, 142));
         }
     }
 
     @ModifyConstant(method = "quickMove", constant = @Constant(intValue = 38))
-    public int injected2(int value) {
-        return 2 + INVENTORY_END - INVENTORY_START + HOTBAR_END - HOTBAR_START;
+    public int injected2(int value, PlayerEntity player) {
+        return 2 + player.realistic_inventory$getInventorySlots() + player.realistic_inventory$getHotbarSlots();
     }
 }

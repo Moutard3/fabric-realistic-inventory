@@ -1,5 +1,6 @@
-package me.moutarde.realisticinventory.mixin;
+package me.moutarde.realisticinventory.mixin.Forging;
 
+import me.moutarde.realisticinventory.mixin.HandledScreenAccessor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.ForgingScreen;
 import org.spongepowered.asm.mixin.Mixin;

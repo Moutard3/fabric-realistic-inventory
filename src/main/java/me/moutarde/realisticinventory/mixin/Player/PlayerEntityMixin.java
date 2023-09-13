@@ -6,16 +6,19 @@ import me.moutarde.realisticinventory.items.BackpackItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import java.util.List;
+import java.util.OptionalInt;
 
 
 @Mixin(PlayerEntity.class)
@@ -35,6 +38,8 @@ public abstract class PlayerEntityMixin implements PlayerEntityExtends {
 
     @Shadow protected abstract void closeHandledScreen();
 
+    @Shadow public abstract OptionalInt openHandledScreen(@Nullable NamedScreenHandlerFactory factory);
+
     @Unique private boolean _hasBackpack = false;
 
     @Override
@@ -45,6 +50,7 @@ public abstract class PlayerEntityMixin implements PlayerEntityExtends {
         int addedSlots = newInventory.size() - this.inventory.main.size();
         PlayerScreenHandler oldHandler = this.playerScreenHandler;
         oldHandler.disableSyncing();
+        this.currentScreenHandler.disableSyncing();
 
         if (addedSlots < 0 && !player.getWorld().isClient) {
             int slotsToThrow = Math.abs(addedSlots);
