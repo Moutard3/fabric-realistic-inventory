@@ -33,6 +33,8 @@ public abstract class PlayerEntityMixin implements PlayerEntityExtends {
 
     @Shadow public ScreenHandler currentScreenHandler;
 
+    @Shadow protected abstract void closeHandledScreen();
+
     @Unique private boolean _hasBackpack = false;
 
     @Override
@@ -104,6 +106,8 @@ public abstract class PlayerEntityMixin implements PlayerEntityExtends {
         this.playerScreenHandler = new PlayerScreenHandler(this.inventory, !((PlayerEntity) (Object) this).getWorld().isClient(), (PlayerEntity) (Object) this);
         if (this.currentScreenHandler instanceof PlayerScreenHandler) {
             this.currentScreenHandler = ((PlayerEntity) (Object) this).playerScreenHandler;
+        } else {
+            this.closeHandledScreen();
         }
         this.playerScreenHandler.setCursorStack(oldHandler.getCursorStack().getItem() == stack.getItem() ? stack : oldHandler.getCursorStack());
     }
