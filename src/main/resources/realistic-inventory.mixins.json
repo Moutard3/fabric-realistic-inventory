@@ -31,6 +31,7 @@
     "HandledScreenAccessor",
     "HandledScreenMixin",
     "MinecraftClientMixin",
+    "RecipeBookWidgetMixin",
     "Beacon.BeaconScreenMixin",
     "BrewingStand.BrewingStandScreenMixin",
     "CartographyTable.CartographyTableScreenMixin",
