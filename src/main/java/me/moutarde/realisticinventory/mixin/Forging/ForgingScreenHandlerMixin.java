@@ -14,8 +14,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.minecraft.screen.PlayerScreenHandler.*;
-
 @Mixin(ForgingScreenHandler.class)
 public class ForgingScreenHandlerMixin {
     @Shadow @Final protected PlayerEntity player;

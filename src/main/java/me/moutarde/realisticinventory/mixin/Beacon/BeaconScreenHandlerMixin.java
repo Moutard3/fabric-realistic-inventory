@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.minecraft.screen.PlayerScreenHandler.*;
-
 @Mixin(BeaconScreenHandler.class)
 public class BeaconScreenHandlerMixin {
     @Redirect(

@@ -2,18 +2,13 @@ package me.moutarde.realisticinventory.client;
 
 import me.moutarde.realisticinventory.Realistic_inventory;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.PlayerScreenHandler;
 
 import static me.moutarde.realisticinventory.Realistic_inventory.BACKPACK_ITEM;
-import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
 
 public class Realistic_inventoryClient implements ClientModInitializer {
     /**

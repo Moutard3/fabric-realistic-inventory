@@ -11,8 +11,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.minecraft.screen.PlayerScreenHandler.*;
-
 @Mixin(MerchantScreenHandler.class)
 public class MerchantScreenHandlerMixin {
     @Unique

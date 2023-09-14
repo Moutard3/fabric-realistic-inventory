@@ -14,8 +14,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.minecraft.screen.PlayerScreenHandler.*;
-
 @Mixin(AbstractFurnaceScreenHandler.class)
 public class AbstractFurnaceScreenHandlerMixin {
     @Redirect(

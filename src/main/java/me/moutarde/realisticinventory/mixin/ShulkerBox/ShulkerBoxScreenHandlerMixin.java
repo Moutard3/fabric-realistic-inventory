@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.minecraft.screen.PlayerScreenHandler.*;
-
 @Mixin(ShulkerBoxScreenHandler.class)
 public class ShulkerBoxScreenHandlerMixin {
     @Redirect(
