@@ -1,5 +1,6 @@
 package me.moutarde.realisticinventory.mixin.Player;
 
+import me.moutarde.realisticinventory.items.BackpackChangeCallback;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -8,8 +9,10 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static me.moutarde.realisticinventory.Realistic_inventory.BACKPACK_ITEM;
 import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
 import static net.minecraft.screen.PlayerScreenHandler.HOTBAR_END;
 import static net.minecraft.screen.PlayerScreenHandler.INVENTORY_START;
@@ -42,12 +45,12 @@ public abstract class PlayerInventoryMixin {
 
     @ModifyConstant(method = "scrollInHotbar", constant = @Constant(intValue = 9))
     public int injected(int value) {
-        return HOTBAR_SIZE;
+        return this.player.realistic_inventory$getHotbarSlots();
     }
 
     @ModifyConstant(method = "getSwappableHotbarSlot", constant = @Constant(intValue = 9))
     public int injected2(int value) {
-        return HOTBAR_SIZE;
+        return this.player.realistic_inventory$getHotbarSlots();
     }
 
     @Redirect(method = "getEmptySlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/collection/DefaultedList;size()I"))
@@ -77,5 +80,17 @@ public abstract class PlayerInventoryMixin {
         }
 
         return value;
+    }
+
+    @Inject(method = "dropAll", at = @At(value = "HEAD"))
+    private void injectedDropAll(CallbackInfo ci) {
+        int backpackSlotId = this.player.realistic_inventory$getHotbarSlots() + this.player.realistic_inventory$getInventorySlots();
+        ItemStack backpackSlotStack = this.main.get(backpackSlotId);
+
+        if (backpackSlotStack.isOf(BACKPACK_ITEM)) {
+            this.player.dropItem(backpackSlotStack, true, false);
+            this.main.set(backpackSlotId, ItemStack.EMPTY);
+            BackpackChangeCallback.EVENT.invoker().onChange(this.player, false);
+        }
     }
 }
