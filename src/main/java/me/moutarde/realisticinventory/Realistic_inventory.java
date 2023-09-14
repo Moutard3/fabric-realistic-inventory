@@ -153,7 +153,7 @@ public class Realistic_inventory implements ModInitializer {
             serverPlayer.onSpawn();
         } else {
             PlayerScreenHandler.INVENTORY_END = PlayerScreenHandler.INVENTORY_START + size;
-            PlayerScreenHandler.HOTBAR_START = PlayerScreenHandler.INVENTORY_END;
+            PlayerScreenHandler.HOTBAR_START = PlayerScreenHandler.INVENTORY_END + 1;
             PlayerScreenHandler.HOTBAR_END = PlayerScreenHandler.HOTBAR_START + HOTBAR_SIZE;
             PlayerScreenHandler.OFFHAND_ID = PlayerScreenHandler.HOTBAR_END;
             PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START + 1;

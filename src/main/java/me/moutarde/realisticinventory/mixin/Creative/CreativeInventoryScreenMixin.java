@@ -26,12 +26,14 @@ public abstract class CreativeInventoryScreenMixin {
             for (int k = 0; k < INVENTORY_END - INVENTORY_START; ++k) {
                 context.drawTexture(SLOT_TEXTURE, i + 9 - 1 + (k % 9) * 18, j + 54 - 1 + (k / 9) * 18, 0, 0.0f, 0.0f, 18, 18, 18, 18);
             }
+
+            context.drawTexture(SLOT_TEXTURE, i + 8 - 1, j + 20 - 1, 0, 0.0f, 0.0f, 18, 18, 18, 18);
         }
     }
 
     @ModifyConstant(method = "onMouseClick", constant = @Constant(intValue = 36))
     private int injectedConstant(int value) {
-        return INVENTORY_END - INVENTORY_START + HOTBAR_END - HOTBAR_START;
+        return HOTBAR_START;
     }
 
     @ModifyConstant(method = "onMouseClick", constant = @Constant(intValue = 9))
@@ -52,11 +54,15 @@ public abstract class CreativeInventoryScreenMixin {
     @ModifyArgs(method = "setSelectedTab", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/ingame/CreativeInventoryScreen$CreativeSlot;<init>(Lnet/minecraft/screen/slot/Slot;III)V"))
     private void injectedOffset(Args args) {
         int i = args.get(1);
-        int n = args.get(2);
 
         final int offset = 18 * 4;
-        if (i >= HOTBAR_START && i < OFFHAND_ID) {
+        if (i >= HOTBAR_START && i < HOTBAR_END) {
             args.set(2, 9 + (i - HOTBAR_START) % 9 * 18 + offset);
+        }
+
+        if (i == INVENTORY_END) {
+            args.set(2 , 8);
+            args.set(3 , 20);
         }
     }
 

@@ -112,10 +112,13 @@ public abstract class PlayerEntityMixin implements PlayerEntityExtends {
         this.playerScreenHandler = new PlayerScreenHandler(this.inventory, !((PlayerEntity) (Object) this).getWorld().isClient(), (PlayerEntity) (Object) this);
         if (this.currentScreenHandler instanceof PlayerScreenHandler) {
             this.currentScreenHandler = ((PlayerEntity) (Object) this).playerScreenHandler;
-        } else {
+        } else if (!player.getWorld().isClient) {
             this.closeHandledScreen();
         }
-        this.playerScreenHandler.setCursorStack(oldHandler.getCursorStack().getItem() == stack.getItem() ? stack : oldHandler.getCursorStack());
+
+        if (!stack.isEmpty() || !oldHandler.getCursorStack().isEmpty()) {
+            this.currentScreenHandler.setCursorStack(oldHandler.getCursorStack().getItem() == stack.getItem() ? stack : oldHandler.getCursorStack());
+        }
     }
 
     @Override
