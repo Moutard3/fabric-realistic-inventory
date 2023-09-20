@@ -14,7 +14,6 @@
     "Forging.ForgingScreenHandlerMixin",
     "Furnace.AbstractFurnaceScreenHandlerMixin",
     "Generic3x3Container.Generic3x3ContainerScreenHandlerMixin",
-    "GenericContainer.GenericContainerScreenHandlerMixin",
     "GrindingStone.GrindstoneScreenHandlerMixin",
     "Horse.HorseScreenHandlerMixin",
     "Loom.LoomScreenHandlerMixin",
