@@ -14,7 +14,7 @@ env:
   MODRINTH_ID: fxfDqjW0
   MODRINTH_TOKEN: ${{ secrets.PUBLISH_MODRINTH_TOKEN }}
 
-  GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB_TOKEN  }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 permissions:
   contents: write
