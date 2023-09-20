@@ -40,7 +40,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           distribution: "temurin"
-          cache: gradle
           java-version: ${{ env.JAVA_VERSION }}
 
       - name: Make Gradle Wrapper Executable
