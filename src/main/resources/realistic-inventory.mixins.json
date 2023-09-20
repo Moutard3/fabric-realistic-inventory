@@ -16,7 +16,6 @@
     "Generic3x3Container.Generic3x3ContainerScreenHandlerMixin",
     "GenericContainer.GenericContainerScreenHandlerMixin",
     "GrindingStone.GrindstoneScreenHandlerMixin",
-    "Hopper.HopperScreenHandlerMixin",
     "Horse.HorseScreenHandlerMixin",
     "Loom.LoomScreenHandlerMixin",
     "Merchant.MerchantScreenHandlerMixin",
@@ -24,8 +23,7 @@
     "Player.PlayerInventoryMixin",
     "Player.PlayerScreenHandlerMixin",
     "Player.ServerPlayerEntityMixin",
-    "ShulkerBox.ShulkerBoxScreenHandlerMixin",
-    "Stonecutter.StonecutterScreenHandlerMixin"
+    "plugins.LibGui.WItemSlotAccessor"
   ],
   "client": [
     "HandledScreenAccessor",
@@ -53,6 +51,7 @@
     "Loom.LoomScreenMixin",
     "Merchant.MerchantScreenMixin",
     "Player.InventoryScreenMixin",
+    "plugins.LibGui.BackgroundPainterMixin",
     "ShulkerBox.ShulkerBoxScreenMixin",
     "Stonecutter.StonecutterScreenMixin"
   ],

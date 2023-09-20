@@ -2,13 +2,17 @@ package me.moutarde.realisticinventory.client;
 
 import me.moutarde.realisticinventory.Realistic_inventory;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.PlayerScreenHandler;
 
 import static me.moutarde.realisticinventory.Realistic_inventory.BACKPACK_ITEM;
+import static me.moutarde.realisticinventory.Realistic_inventory.HOTBAR_SIZE;
 
 public class Realistic_inventoryClient implements ClientModInitializer {
     /**
@@ -30,6 +34,16 @@ public class Realistic_inventoryClient implements ClientModInitializer {
                         MinecraftClient.getInstance().setScreen(new InventoryScreen(client.player));
                     }
                 }
+            });
+        });
+
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            client.execute(() -> {
+                PlayerScreenHandler.INVENTORY_END = PlayerScreenHandler.INVENTORY_START + 27;
+                PlayerScreenHandler.HOTBAR_START = PlayerScreenHandler.INVENTORY_END;
+                PlayerScreenHandler.HOTBAR_END = PlayerScreenHandler.HOTBAR_START + HOTBAR_SIZE;
+                PlayerScreenHandler.OFFHAND_ID = PlayerScreenHandler.HOTBAR_END;
+                PlayerInventory.MAIN_SIZE = PlayerScreenHandler.HOTBAR_END - PlayerScreenHandler.INVENTORY_START + 1;
             });
         });
     }
