@@ -1,4 +1,4 @@
-name: Publish on Github, CurseForge & Modrinth
+name: Publish on Github / CurseForge / Modrinth
 
 on:
   release:
